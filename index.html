@@ -3,521 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b0f0c" />
   <title>MLauncher</title>
 
-  <!-- Google Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <style>
-    :root {
-      --primary: #04f104;        /* hijau utama */
-      --primary-dark: #15803d;   /* hijau lebih gelap */
-      --secondary: #0f172a;
-      --accent: #22c55e;
-      --danger: #ef4444;
-      --warning: #f97316;
-      --light: #f9fafb;
-      --muted: #6b7280;
-      --border-radius-lg: 18px;
-      --border-radius-md: 12px;
-      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.12);
-      --transition: all 0.25s ease;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background:
-        radial-gradient(circle at top left, rgba(34, 197, 94, 0.24), transparent 55%),
-        radial-gradient(circle at bottom right, rgba(45, 212, 191, 0.18), transparent 55%),
-        #020617;
-      color: #0f172a;
-    }
-
-    .app-shell {
-      width: 100%;
-      max-width: 720px;
-      background: rgba(15, 23, 42, 0.96);
-      border-radius: 24px;
-      padding: 1px;
-      box-shadow: var(--shadow-soft);
-      overflow: hidden;
-      backdrop-filter: blur(10px);
-    }
-
-    .container {
-      background: #ffffff;
-      border-radius: 22px;
-      padding: 24px 24px 18px;
-    }
-
-    /* --- HEADER --- */
-
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    /* Meniru Logo menggunakan CSS */
-    .header-logo-container {
-      width: 60px;
-      height: 60px;
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
-      flex-shrink: 0;
-    }
-
-    .css-logo {
-      width: 44px;
-      height: 44px;
-      position: relative;
-      /* Gradien warna biru tua ke biru muda */
-      background: linear-gradient(135deg, #0369a1, #0ea5e9);
-      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* Membentuk belah ketupat */
-      border-radius: 6px;
-    }
-
-    .css-logo-cutout {
-      position: absolute;
-      width: 20px; /* Lebar celah putih */
-      height: 20px;
-      background: white; /* Celah putih */
-      transform: rotate(45deg) skewX(-20deg) skewY(-20deg); /* Skew dan rotasi celah */
-      left: calc(50% - 13px);
-      top: calc(50% - 10px);
-    }
-
-    .header-text {
-      flex: 1;
-    }
-
-    .header-title-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 4px;
-    }
-
-    .header h1 {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #0f172a;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .header-badge {
-      font-size: 0.7rem;
-      padding: 3px 9px;
-      border-radius: 999px;
-      background: rgba(22, 163, 74, 0.08);  /* hijau lembut */
-      color: #15803d;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .header-subtitle {
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    /* --- CONTENT LAYOUT --- */
-
-    .content {
-      display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      gap: 24px;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 18px 16px 14px;
-      }
-
-      .header {
-        flex-direction: row;
-        align-items: flex-start;
-      }
-
-      .content {
-        grid-template-columns: 1fr;
-        gap: 18px;
-      }
-    }
-
-    /* --- STATUS SECTION --- */
-
-    .status-section {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-bottom: 6px;
-    }
-
-    .status-card {
-      background: var(--light);
-      border-radius: var(--border-radius-md);
-      padding: 14px 14px 12px;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      border: 1px solid #e5e7eb;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .status-card::after {
-      content: "";
-      position: absolute;
-      inset-inline-start: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: linear-gradient(to bottom, #bbf7d0, #22c55e); /* hijau */
-      opacity: 0.9;
-    }
-
-    .status-icon {
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #dcfce7;  /* hijau muda */
-      color: #16a34a;       /* hijau */
-      flex-shrink: 0;
-      font-size: 16px;
-      margin-top: 2px;
-    }
-
-    .status-body {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .status-label {
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--muted);
-      margin-bottom: 2px;
-    }
-
-    .status-value-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .status-value {
-      font-weight: 600;
-      font-size: 0.98rem;
-      color: #111827;
-    }
-
-    .status-pill {
-      font-size: 0.7rem;
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid #e5e7eb;
-      color: var(--muted);
-    }
-
-    .status-internet.connected {
-      color: #16a34a;
-    }
-
-    .status-internet.disconnected {
-      color: #dc2626;
-    }
-
-    /* --- SECTIONS & DIVIDER --- */
-
-    .section-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .divider {
-      height: 1px;
-      background: linear-gradient(to right, transparent, #e5e7eb, transparent);
-      margin: 16px 0;
-    }
-
-    .section {
-      background: #f9fafb;
-      border-radius: var(--border-radius-md);
-      padding: 14px 14px 12px;
-      border: 1px solid #e5e7eb;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .section-title {
-      font-size: 0.98rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #111827;
-      font-weight: 600;
-    }
-
-    .section-title i {
-      font-size: 0.95rem;
-      color: var(--primary); /* icon hijau */
-    }
-
-    /* --- BUTTONS --- */
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
-      width: 100%;
-      text-align: center;
-      white-space: nowrap;
-    }
-
-    .btn i {
-      font-size: 0.9rem;
-    }
-
-    .btn-primary {
-      background: linear-gradient(to right, var(--primary), var(--primary-dark));
-      color: #ffffff;
-      box-shadow: 0 10px 30px rgba(22, 163, 74, 0.35);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 14px 40px rgba(22, 163, 74, 0.4);
-    }
-
-    .btn-secondary {
-      background: #ffffff;
-      color: #111827;
-      border-color: #e5e7eb;
-    }
-
-    .btn-secondary:hover {
-      background: #f3f4f6;
-      border-color: #d1d5db;
-    }
-
-    .btn-success {
-      background: #22c55e;
-      color: #ecfdf5;
-      border-color: #16a34a;
-    }
-
-    .btn-success:hover {
-      background: #16a34a;
-    }
-
-    .btn-danger {
-      background: var(--danger);
-      color: #fef2f2;
-      border-color: #b91c1c;
-    }
-
-    .btn-danger:hover {
-      background: #b91c1c;
-    }
-
-    .btn-full {
-      width: 100%;
-    }
-
-    button:focus-visible {
-      outline: 2px solid #16a34a;
-      outline-offset: 2px;
-    }
-
-    /* --- FORM --- */
-
-    .password-section,
-    .settings-section {
-      margin-top: 10px;
-      background: #ffffff;
-      border-radius: var(--border-radius-md);
-      border: 1px solid #e5e7eb;
-      padding: 12px 14px;
-      animation: fadeIn 0.3s ease-out;
-    }
-
-    .form-group {
-      margin-bottom: 10px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: #111827;
-      margin-bottom: 6px;
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 9px 11px;
-      border-radius: 10px;
-      border: 1px solid #e5e7eb;
-      font-size: 0.9rem;
-      transition: var(--transition);
-      background: #f9fafb;
-    }
-
-    .form-control::placeholder {
-      color: #9ca3af;
-    }
-
-    .form-control:focus {
-      outline: none;
-      border-color: #16a34a;
-      background: #ffffff;
-      box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.35);
-    }
-
-    .error-message {
-      display: none;
-      margin-top: 4px;
-      font-size: 0.8rem;
-      color: var(--danger);
-    }
-
-    .error-message i {
-      margin-right: 4px;
-    }
-
-    /* --- MAIN ACTION BUTTON --- */
-
-    .main-action {
-      margin-top: 8px;
-    }
-
-    .pulse {
-      animation: pulse 2.4s infinite;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(4px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes pulse {
-      0% {
-        transform: translateY(0) scale(1);
-      }
-      50% {
-        transform: translateY(-1px) scale(1.01);
-      }
-      100% {
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    /* --- FOOTER --- */
-
-    .footer {
-      padding-top: 10px;
-      margin-top: 12px;
-      border-top: 1px solid #e5e7eb;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-
-    .footer span {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .footer span i {
-      font-size: 0.7rem;
-    }
-
-    @media (max-width: 576px) {
-      body {
-        padding: 16px;
-      }
-
-      .header-title-row {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .header h1 {
-        font-size: 1.2rem;
-      }
-
-      .footer {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-  </style>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
   <div class="app-shell">
     <div class="container">
       <!-- --- HEADER --- -->
       <header class="header">
-        <div class="header-logo-container" aria-hidden="true">
-          <div class="css-logo">
-            <div class="css-logo-cutout"></div>
-          </div>
+        <div class="block-logo" aria-hidden="true">
+          <div class="face face-top"></div>
+          <div class="face face-left"></div>
+          <div class="face face-right"></div>
         </div>
         <div class="header-text">
           <div class="header-title-row">
@@ -528,27 +29,40 @@
         </div>
       </header>
 
+      <div id="update-banner" class="banner update-banner" role="status">
+        <span>
+          <svg class="icon" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+          Versi baru launcher tersedia.
+        </span>
+        <button id="btn-reload-update" class="btn btn-secondary">Muat Ulang</button>
+      </div>
+
+      <div id="storage-warning" class="banner storage-warning" role="status">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        <span>Mode privat terdeteksi &mdash; pengaturan disimpan sementara di sesi ini.</span>
+      </div>
+
       <!-- --- CONTENT --- -->
       <main class="content">
-        <!-- LEFT: STATUS + MASUK -->
+        <!-- LEFT: STATUS + SKIN + PROFIL -->
         <section>
           <div class="status-section">
             <article class="status-card" aria-live="polite">
               <div class="status-icon">
-                <i class="fas fa-wifi"></i>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><path d="M12 20h.01"/></svg>
               </div>
               <div class="status-body">
                 <div class="status-label">Status Koneksi</div>
                 <div class="status-value-row">
                   <p id="status-internet" class="status-value status-internet">Memeriksa...</p>
-                  <span class="status-pill">Internet</span>
+                  <span id="status-ping-pill" class="status-pill">Internet</span>
                 </div>
               </div>
             </article>
 
             <article class="status-card" aria-live="polite">
               <div class="status-icon">
-                <i class="fas fa-microchip"></i>
+                <svg class="icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 14h3M20 9h3M20 14h3"/></svg>
               </div>
               <div class="status-body">
                 <div class="status-label">Sumber Daya Perangkat</div>
@@ -558,79 +72,198 @@
                 </div>
               </div>
             </article>
+
+            <article class="status-card" aria-live="polite">
+              <div class="status-icon">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/></svg>
+              </div>
+              <div class="status-body">
+                <div class="status-label">Ping Server Aktif</div>
+                <div class="status-value-row">
+                  <p id="status-server-ping" class="status-value">&mdash;</p>
+                  <button id="btn-ping-server" class="status-pill" style="cursor:pointer;background:none;">Cek Ping</button>
+                </div>
+              </div>
+            </article>
           </div>
 
           <div class="divider"></div>
 
-          <div class="main-action">
-            <button id="btn-masuk" class="btn btn-primary btn-full pulse">
-              <i class="fas fa-door-open"></i>
-              <span>Masuk Ke Game</span>
+          <!-- SKIN PREVIEW -->
+          <div class="section" style="margin-bottom: 14px;">
+            <div class="section-title" style="margin-bottom: 6px;">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+              <span>Pratinjau Karakter</span>
+            </div>
+            <div class="skin-controls">
+              <div id="skin-preview"></div>
+              <label for="skin-file-input" id="skin-dropzone" class="skin-dropzone">
+                Seret file skin (.png) ke sini atau klik untuk unggah
+              </label>
+              <input type="file" id="skin-file-input" accept="image/png" style="display:none;" />
+            </div>
+          </div>
+
+          <!-- AKUN CLOUD (FIREBASE) -->
+          <div class="section">
+            <div class="section-title" style="margin-bottom: 6px;">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <span>Akun Cloud</span>
+            </div>
+
+            <div id="firebase-status" class="account-status">Belum login.</div>
+
+            <div id="firebase-login-buttons" class="btn-row" style="margin-bottom: 10px;">
+              <button id="btn-firebase-google" class="btn btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 48 48" style="flex-shrink:0;">
+                  <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.1 29.6 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"/>
+                  <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.9 18.9 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.1 29.6 4 24 4c-7.6 0-14.1 4.3-17.7 10.7z"/>
+                  <path fill="#4CAF50" d="M24 44c5.5 0 10.5-2.1 14.3-5.6l-6.6-5.6C29.6 34.6 26.9 35.5 24 35.5c-5.3 0-9.7-3.1-11.3-7.6l-6.5 5C9.8 39.6 16.4 44 24 44z"/>
+                  <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.2 4.2-4.1 5.6l6.6 5.6C39.9 37.8 44 32 44 24c0-1.3-.1-2.7-.4-3.5z"/>
+                </svg>
+                <span>Login Google</span>
+              </button>
+              <button id="btn-firebase-guest" class="btn btn-outline">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg>
+                <span>Masuk Tamu</span>
+              </button>
+            </div>
+            <button id="btn-firebase-logout" class="btn btn-outline btn-full" style="display:none; margin-bottom: 10px;">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+              <span>Keluar</span>
             </button>
+            <p id="firebase-warning" class="field-feedback" style="color: var(--warning);"></p>
+
+            <div class="form-group">
+              <label for="username-input">Nama Tampilan di Game</label>
+              <input type="text" id="username-input" class="form-control" placeholder="Otomatis dari akun, atau isi manual" autocomplete="off" maxlength="24" />
+            </div>
+
+            <label class="checkbox-row" for="fullscreen-toggle">
+              <input type="checkbox" id="fullscreen-toggle" />
+              <span>Buka layar penuh otomatis saat masuk</span>
+            </label>
+            <label class="checkbox-row" for="sound-toggle">
+              <input type="checkbox" id="sound-toggle" checked />
+              <span>Efek suara UI</span>
+            </label>
           </div>
         </section>
 
-        <!-- RIGHT: ADMIN / PENGATURAN -->
+        <!-- RIGHT: ADMIN / PENGATURAN / BERITA -->
         <section class="section-wrapper">
           <div class="section">
             <div class="section-header">
               <div class="section-title">
-                <i class="fas fa-user-shield"></i>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
                 <span>Panel Admin</span>
               </div>
             </div>
 
             <button id="btn-buka-setting" class="btn btn-secondary btn-full">
-              <i class="fas fa-cog"></i>
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
               <span>Buka Pengaturan (Admin)</span>
             </button>
 
             <!-- PASSWORD PROMPT -->
             <div id="password-prompt" class="password-section" style="display: none;">
               <div class="section-title" style="margin-bottom: 6px;">
-                <i class="fas fa-lock"></i>
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 <span>Masuk Sebagai Admin</span>
               </div>
               <div class="form-group">
                 <label for="admin-password">Password Admin</label>
-                <input
-                  type="password"
-                  id="admin-password"
-                  class="form-control"
-                  placeholder="Masukkan password admin"
-                  autocomplete="off"
-                />
-                <p id="password-error" class="error-message">
-                  <i class="fas fa-exclamation-circle"></i>
+                <input type="password" id="admin-password" class="form-control" placeholder="Masukkan password admin" autocomplete="off" />
+                <p id="password-error" class="error-message" role="alert" aria-live="assertive">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
                   Password salah. Silakan coba lagi.
                 </p>
               </div>
               <button id="btn-submit-password" class="btn btn-primary btn-full">
-                <i class="fas fa-sign-in-alt"></i>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>
                 <span>Login Admin</span>
               </button>
             </div>
 
             <!-- SETTINGS -->
             <div id="settings-section" class="settings-section" style="display: none;">
-              <div class="section-title" style="margin-bottom: 6px;">
-                <i class="fas fa-sliders-h"></i>
-                <span>Pengaturan URL</span>
+              <div class="section-title" style="margin-bottom: 8px;">
+                <svg class="icon" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                <span>Server Tersimpan</span>
               </div>
+
+              <div class="form-group">
+                <label for="bookmark-select">Pilih Server</label>
+                <select id="bookmark-select" class="form-control"></select>
+              </div>
+
+              <div class="form-group">
+                <label for="bookmark-name">Nama Server</label>
+                <input type="text" id="bookmark-name" class="form-control" placeholder="Contoh: Server Rumah" />
+              </div>
+
               <div class="form-group">
                 <label for="url-ujian">Alamat URL Game</label>
-                <input
-                  type="text"
-                  id="url-ujian"
-                  class="form-control"
-                  placeholder="https://eaglercraft.com"
-                />
+                <input type="text" id="url-ujian" class="form-control" placeholder="https://eaglercraft.com" />
+                <p id="bookmark-feedback" class="field-feedback"></p>
               </div>
-              <button id="btn-simpan" class="btn btn-success btn-full">
-                <i class="fas fa-save"></i>
-                <span>Simpan URL</span>
+
+              <div class="form-group">
+                <label for="ram-slider">Alokasi Memori Virtual (WASM)</label>
+                <div class="ram-slider-row">
+                  <input type="range" id="ram-slider" min="1" max="8" step="1" value="2" />
+                  <span id="ram-slider-value" class="ram-slider-value">2 GB</span>
+                </div>
+              </div>
+
+              <div class="btn-row" style="margin-bottom: 8px;">
+                <button id="btn-simpan" class="btn btn-success">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>
+                  <span>Simpan</span>
+                </button>
+                <button id="btn-tambah-bookmark" class="btn btn-secondary">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                  <span>Tambah Baru</span>
+                </button>
+              </div>
+              <button id="btn-hapus-bookmark" class="btn btn-danger btn-full" style="margin-bottom: 12px;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                <span>Hapus Server Ini</span>
+              </button>
+
+              <div class="divider" style="margin: 12px 0;"></div>
+
+              <div class="section-title" style="margin-bottom: 6px;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span>Modpack &amp; Resource Pack</span>
+              </div>
+              <label for="modpack-file-input" id="modpack-dropzone" class="modpack-dropzone">
+                Seret file .zip / .jar / .epk ke sini, atau klik untuk memilih
+              </label>
+              <input type="file" id="modpack-file-input" accept=".zip,.jar,.epk" style="display:none;" />
+              <ul id="modpack-list" class="modpack-list"></ul>
+
+              <div class="divider" style="margin: 12px 0;"></div>
+
+              <div class="section-title" style="margin-bottom: 6px;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                <span>Riwayat Aktivitas</span>
+              </div>
+              <ul id="activity-list" class="activity-list"></ul>
+              <button id="btn-clear-log" class="btn btn-outline btn-full">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                <span>Bersihkan Riwayat</span>
               </button>
             </div>
+          </div>
+
+          <!-- NEWSFEED -->
+          <div class="section">
+            <div class="section-title" style="margin-bottom: 6px;">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M4 22h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/></svg>
+              <span>Berita &amp; Pembaruan</span>
+            </div>
+            <div id="newsfeed" class="newsfeed"></div>
           </div>
         </section>
       </main>
@@ -638,17 +271,32 @@
       <!-- --- FOOTER --- -->
       <footer class="footer">
         <span>
-          <i class="fas fa-shield-alt"></i>
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
           MLauncher &copy; 2026 Launcher Game - Anonim
         </span>
         <span>
-          <i class="fas fa-circle-info"></i>
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
           Masuk dan pilih Game version nya
         </span>
       </footer>
     </div>
   </div>
 
-  <script src="./launcher.js"></script>
+  <!-- --- BOTTOM PLAY BAR --- -->
+  <div class="bottom-bar">
+    <div class="bottom-bar-left">
+      <select id="bottom-bar-server-select" class="bottom-bar-server-select"></select>
+    </div>
+    <button id="btn-masuk" class="btn bottom-bar-play">
+      <span>Play</span>
+      <span id="bottom-bar-play-sub" class="bottom-bar-play-sub"></span>
+    </button>
+    <div class="bottom-bar-right">
+      <strong id="bottom-bar-username">Tamu</strong>
+      <span id="bottom-bar-ping">&mdash;</span>
+    </div>
+  </div>
+
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "title": "Selamat datang di MLauncher",
+    "date": "2026-08-01",
+    "summary": "Launcher sekarang mendukung banyak server tersimpan, profil versi, dan mode layar penuh otomatis."
+  },
+  {
+    "id": "2",
+    "title": "Tips: Simpan Beberapa Server",
+    "date": "2026-07-20",
+    "summary": "Gunakan Panel Admin untuk menambahkan lebih dari satu server dan berpindah dengan cepat lewat dropdown."
+  },
+  {
+    "id": "3",
+    "title": "Mode Offline Tersedia",
+    "date": "2026-07-10",
+    "summary": "Launcher kini bisa dipasang sebagai aplikasi (PWA) dan tampilannya tetap terbuka walau sedang offline."
+  }
+]

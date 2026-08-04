@@ -1,0 +1,19 @@
+{
+  "name": "Minecraft Web Launcher",
+  "short_name": "MLauncher",
+  "description": "Launcher web untuk masuk ke server Minecraft berbasis browser.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b0f0c",
+  "theme_color": "#0b0f0c",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
