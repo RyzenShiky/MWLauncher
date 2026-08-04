@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   // --- KONFIGURASI CONSTANT ---
   const DEFAULT_ADMIN_PASS = "pontianak67"; 
-  const DEFAULT_GAME_URL = "https://eaglercraft.com"; // URL Default Game
+  const DEFAULT_GAME_URL = "https://ryzenshiky.github.io/Minecraft-Web/"; // URL Default Game
 
   // --- ELEMEN DOM ---
   const statusInternetEl = document.getElementById("status-internet");
