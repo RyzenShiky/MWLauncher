@@ -4,6 +4,9 @@
 //      cases better than plain localStorage, also used for large binary
 //      data like modpack/resource-pack files)
 //   3) in-memory Map (last resort, lost on reload — user is warned in UI)
+//   4) Firebase Realtime Database (cloud saves under players/{uid}/saves/default)
+
+import { getFirebaseServices } from "./firebase-auth.js";
 
 const DB_NAME = "mlauncher_db";
 const DB_VERSION = 1;
@@ -206,3 +209,33 @@ export const storage = {
     },
   },
 };
+
+// ---------------------------------------------------------------------------
+// Firebase Realtime Database — cloud player saves
+// Path: players/{uid}/saves/default
+// ---------------------------------------------------------------------------
+
+/**
+ * Simpan data pemain ke Realtime Database.
+ * @param {string} uid - Firebase Auth UID
+ * @param {object} saveData - Objek data yang akan disimpan
+ */
+export async function savePlayerData(uid, saveData) {
+  if (!uid) throw new Error("savePlayerData: uid diperlukan");
+  const { db, dbModule } = await getFirebaseServices();
+  const { ref, set } = dbModule;
+  await set(ref(db, `players/${uid}/saves/default`), saveData);
+}
+
+/**
+ * Muat data pemain dari Realtime Database.
+ * @param {string} uid - Firebase Auth UID
+ * @returns {object|null} Data save, atau null jika belum ada
+ */
+export async function loadPlayerData(uid) {
+  if (!uid) throw new Error("loadPlayerData: uid diperlukan");
+  const { db, dbModule } = await getFirebaseServices();
+  const { ref, get, child } = dbModule;
+  const snapshot = await get(child(ref(db), `players/${uid}/saves/default`));
+  return snapshot.exists() ? snapshot.val() : null;
+}

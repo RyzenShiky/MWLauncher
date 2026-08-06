@@ -4,7 +4,7 @@ import { storage } from "./storage.js";
 const STORE_KEY = "m_launcher_bookmarks_v3";
 
 const DEFAULT_BOOKMARKS = [
-  { id: "default", name: "Minecraft Web Edition (Default)", url: "https://ryzenshiky.github.io/Minecraft-Web/", ramGb: 2 },
+  { id: "default", name: "Eaglercraft (Default)", url: "https://eaglercraft.com", ramGb: 2 },
 ];
 
 function makeId() {
