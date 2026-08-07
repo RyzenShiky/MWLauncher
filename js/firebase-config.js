@@ -8,7 +8,7 @@
 // Reminder: in Firebase Console → Authentication → Sign-in method, make
 // sure "Google" and "Anonymous" are both enabled, and under Authentication
 // → Settings → Authorized domains, add the domain this launcher is hosted
-// on (e.g. xcceliteplayer-code.github.io) — otherwise sign-in fails with
+// on (e.g. ryzenshiky.github.io) — otherwise sign-in fails with
 // an "auth/unauthorized-domain" error.
 //
 // Realtime Database: enable Realtime Database in the Firebase Console and

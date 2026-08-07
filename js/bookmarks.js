@@ -3,8 +3,17 @@ import { storage } from "./storage.js";
 
 const STORE_KEY = "m_launcher_bookmarks_v3";
 
+const DEFAULT_URL = "https://ryzenshiky.github.io/Minecraft-Web/";
 const DEFAULT_BOOKMARKS = [
-  { id: "default", name: "Eaglercraft (Default)", url: "https://eaglercraft.com", ramGb: 2 },
+  { id: "default", name: "Minecraft Web (Default)", url: DEFAULT_URL, ramGb: 2 },
+];
+
+// Old defaults that should be rewritten to DEFAULT_URL on load
+const LEGACY_DEFAULT_URLS = [
+  "https://eaglercraft.com",
+  "http://eaglercraft.com",
+  "https://eaglercraft.com/",
+  "http://eaglercraft.com/",
 ];
 
 function makeId() {
@@ -23,10 +32,36 @@ function normalizeUrl(rawUrl) {
   }
 }
 
+function isLegacyDefaultUrl(url) {
+  if (!url) return false;
+  const normalized = url.trim().replace(/\/+$/, "").toLowerCase();
+  return LEGACY_DEFAULT_URLS.some(
+    (legacy) => legacy.replace(/\/+$/, "").toLowerCase() === normalized
+  );
+}
+
+function rewriteLegacyDefaultUrls(state) {
+  if (!state || !Array.isArray(state.bookmarks)) return state;
+  let changed = false;
+  for (const b of state.bookmarks) {
+    if (isLegacyDefaultUrl(b.url)) {
+      b.url = DEFAULT_URL;
+      if (!b.name || /eaglercraft/i.test(b.name) || b.name === "Server Tersimpan") {
+        b.name = "Minecraft Web (Default)";
+      }
+      changed = true;
+    }
+  }
+  if (changed) storage.setJSON(STORE_KEY, state);
+  return state;
+}
+
 function migrateLegacyIfNeeded() {
-  // v3 already present — nothing to migrate
+  // v3 already present — rewrite old eaglercraft defaults if any
   const v3 = storage.getJSON(STORE_KEY, null);
-  if (v3 && Array.isArray(v3.bookmarks) && v3.bookmarks.length) return v3;
+  if (v3 && Array.isArray(v3.bookmarks) && v3.bookmarks.length) {
+    return rewriteLegacyDefaultUrls(v3);
+  }
 
   // Try v2 (had installType/version fields, now dropped) or v1
   const older = storage.getJSON("m_launcher_bookmarks_v2", null) || storage.getJSON("m_launcher_bookmarks_v1", null);
@@ -34,9 +69,15 @@ function migrateLegacyIfNeeded() {
     const bookmarks = older.bookmarks.map((b) => ({
       id: b.id,
       name: b.name,
-      url: b.url,
+      url: isLegacyDefaultUrl(b.url) ? DEFAULT_URL : b.url,
       ramGb: b.ramGb || 2,
     }));
+    // Rename default-looking entries that still say Eaglercraft
+    for (const b of bookmarks) {
+      if (b.url === DEFAULT_URL && (!b.name || /eaglercraft/i.test(b.name))) {
+        b.name = "Minecraft Web (Default)";
+      }
+    }
     const state = { bookmarks, activeId: older.activeId || bookmarks[0].id };
     storage.setJSON(STORE_KEY, state);
     return state;
@@ -45,7 +86,14 @@ function migrateLegacyIfNeeded() {
   // Original single-URL key from the very first version of the launcher
   const legacyUrl = storage.get("m_launcher_url");
   const bookmarks = legacyUrl
-    ? [{ id: "default", name: "Server Tersimpan", url: legacyUrl, ramGb: 2 }]
+    ? [
+        {
+          id: "default",
+          name: isLegacyDefaultUrl(legacyUrl) ? "Minecraft Web (Default)" : "Server Tersimpan",
+          url: isLegacyDefaultUrl(legacyUrl) ? DEFAULT_URL : legacyUrl,
+          ramGb: 2,
+        },
+      ]
     : DEFAULT_BOOKMARKS.slice();
 
   const state = { bookmarks, activeId: bookmarks[0].id };
@@ -71,7 +119,7 @@ export function createBookmarkStore({ onExternalChange } = {}) {
     try {
       const incoming = JSON.parse(event.newValue);
       if (incoming && Array.isArray(incoming.bookmarks)) {
-        state = incoming;
+        state = rewriteLegacyDefaultUrls(incoming);
         if (onExternalChange) onExternalChange(list(), getActive());
       }
     } catch (err) {

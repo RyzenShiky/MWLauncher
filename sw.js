@@ -1,6 +1,6 @@
 // sw.js — caches the launcher's own shell (HTML/CSS/JS/icons/data) so the
 // UI still loads offline. It deliberately does NOT try to cache the
-// external game URLs (e.g. eaglercraft.com) — those still require a live
+// external game URLs (e.g. ryzenshiky.github.io) — those still require a live
 // connection, which the app already checks for before navigating.
 //
 // Bump CACHE_NAME on every deploy. Old caches are purged on activate, and

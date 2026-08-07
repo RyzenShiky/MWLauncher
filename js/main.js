@@ -110,19 +110,32 @@ document.addEventListener("DOMContentLoaded", () => {
         statusPingPillEl.textContent = "Tanpa akses internet nyata";
       }
     },
+    // Live auto-scan of the active game server (no manual click required)
+    onServerPing: ({ checking, ms }) => {
+      if (checking) {
+        statusServerPingEl.textContent = "Scan...";
+        bottomBarPing.textContent = "...";
+        statusServerPingEl.classList.remove("connected", "disconnected");
+        return;
+      }
+      if (ms !== null) {
+        const text = `${ms} ms`;
+        statusServerPingEl.textContent = text;
+        bottomBarPing.textContent = text;
+        statusServerPingEl.classList.add("connected");
+        statusServerPingEl.classList.remove("disconnected");
+      } else {
+        statusServerPingEl.textContent = "Tidak terjangkau";
+        bottomBarPing.textContent = "—";
+        statusServerPingEl.classList.add("disconnected");
+        statusServerPingEl.classList.remove("connected");
+      }
+    },
   });
   netMonitor.start();
 
-  async function pingActiveServer() {
-    const active = bookmarkStore.getActive();
-    statusServerPingEl.textContent = "Mengecek...";
-    bottomBarPing.textContent = "...";
-    const ms = await netMonitor.pingTarget(active.url);
-    const text = ms !== null ? `${ms} ms` : "Tidak terjangkau";
-    statusServerPingEl.textContent = text;
-    bottomBarPing.textContent = text;
-  }
-  btnPingServer.addEventListener("click", pingActiveServer);
+  // Optional manual refresh still available
+  btnPingServer.addEventListener("click", () => netMonitor.refreshServerPing());
 
   // ---------- DEVICE MEMORY ----------
   function updateMemoryStatus() {
@@ -178,10 +191,12 @@ document.addEventListener("DOMContentLoaded", () => {
     renderRamValue();
 
     bottomBarPlaySub.textContent = active.name;
-    statusServerPingEl.textContent = "\u2014";
-    bottomBarPing.textContent = "\u2014";
+    statusServerPingEl.textContent = "Scan...";
+    bottomBarPing.textContent = "...";
 
     warmUpTarget(active.url);
+    // Auto live-ping the newly selected server (continuous scan)
+    netMonitor.setServerTarget(active.url);
   }
   renderBookmarkOptions();
 
